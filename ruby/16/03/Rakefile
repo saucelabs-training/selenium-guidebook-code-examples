@@ -1,0 +1,27 @@
+def launch_in_parallel
+  tags      = ENV['TAG']
+  processes = ENV['PROCESSES']
+  ci        = "--format RspecJunitFormatter " +
+              "--out tmp/result#{ENV['TEST_ENV_NUMBER']}.xml" if ENV['CI']
+  system(
+    "parallel_rspec " + 
+    "#{'-n ' + processes if processes} " +
+    "--test-options '--order random #{'--tag ' + tags if tags} #{ci if ci}' " +
+    "spec"
+  )
+end
+
+desc 'Run tests locally'
+task :local, :browser_name do |task, args|
+  ENV['HOST'] = 'localhost'
+  ENV['BROWSER_NAME'] = args[:browser_name]
+  launch_in_parallel
+end
+
+desc 'Run tests on Sauce Labs'
+task :sauce, :browser_name, :browser_version, :platform_name do |t, args|
+  ENV['BROWSER_NAME']  = args[:browser_name]
+  ENV['BROWSER_VERSION'] = args[:browser_version]
+  ENV['PLATFORM_NAME'] = args[:platform_name]
+  launch_in_parallel
+end

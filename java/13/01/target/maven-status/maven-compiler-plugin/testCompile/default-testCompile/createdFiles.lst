@@ -1,0 +1,8 @@
+tests/BaseTest$1.class
+tests/TestDynamicLoading.class
+tests/TestLogin.class
+tests/Config.class
+tests/BaseTest.class
+pageobjects/DynamicLoading.class
+pageobjects/Login.class
+pageobjects/BasePage.class
